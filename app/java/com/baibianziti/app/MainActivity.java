@@ -64,11 +64,20 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            // 状态栏融入宣纸底色，图标转深色，整体如一卷展开的纸
-            getWindow().setStatusBarColor(0xFFF4EBD9);
+            // 状态栏与导航栏都融入宣纸底色，整体如一张摊开的纸
+            getWindow().setStatusBarColor(0xFFFDFAF1);
+            getWindow().setNavigationBarColor(0xFFF2E9D6);
         }
+        // 状态栏/导航栏图标转深色（纸浅需深字）
+        int uiFlags = 0;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            uiFlags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            uiFlags |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+        }
+        if (uiFlags != 0) {
+            getWindow().getDecorView().setSystemUiVisibility(uiFlags);
         }
 
         web = new WebView(this);
@@ -87,7 +96,7 @@ public class MainActivity extends Activity {
         s.setBuiltInZoomControls(false);
         s.setDisplayZoomControls(false);
         s.setMediaPlaybackRequiresUserGesture(true);
-        web.setBackgroundColor(0xFFF2E9D8);
+        web.setBackgroundColor(0xFFF2E9D6);
         web.addJavascriptInterface(new Bridge(), "FontApp");
 
         web.setWebViewClient(new WebViewClient() {

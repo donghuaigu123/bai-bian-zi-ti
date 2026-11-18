@@ -433,8 +433,10 @@
         o._bodyH = pageH - bodyTop - padBottom - footerH * 0.62;
       } else {
         var rows = Math.max(1, groups[0].length);
-        pageH = Math.round(bodyTop + rows * lineH + padBottom + footerH * 0.62);
-        pageH = Math.max(MIN_H, Math.min(MAX_H, pageH));
+        var rawH = Math.round(bodyTop + rows * lineH + padBottom + footerH * 0.62);
+        pageH = Math.max(MIN_H, Math.min(MAX_H, rawH));
+        // 内容少、被最小高度撑开时，正文改为整幅居中，避免上半截有字下半截空
+        o._fitTall = (rawH < MIN_H);
         o._bodyH = pageH - bodyTop - padBottom - footerH * 0.62;
       }
     } else {
@@ -525,7 +527,7 @@
         var availH2 = pageH - bodyTop - padBottom - footerH * 0.72;
         var contentH2 = group.length * lineH;
         var off2 = Math.max(0, (availH2 - contentH2) / 2);
-        bodyTop2 = bodyTop + Math.min(off2, lineH * 1.2);
+        bodyTop2 = bodyTop + (o._fitTall ? off2 : Math.min(off2, lineH * 1.2));
       }
 
       var cellH = lineH;

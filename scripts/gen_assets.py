@@ -131,7 +131,7 @@ def gen_coverage():
 # ---------------------------------------------------------------- 3. 缩略图
 def gen_previews():
     os.makedirs(PREVIEW_DIR, exist_ok=True)
-    CW, CH = 200, 124
+    CW, CH = 200, 200
     for fid, name, fname, fam, styl in FONT_TABLE:
         if fname:
             path = font_path(fname)
@@ -144,7 +144,7 @@ def gen_previews():
 
         img = Image.new("RGBA", (CW, CH), (0, 0, 0, 0))
         d = ImageDraw.Draw(img)
-        size = 74
+        size = 132
         try:
             f = ImageFont.truetype(path, size, index=0)
         except Exception:
@@ -153,7 +153,7 @@ def gen_previews():
         # 风格化：先画在临时图层，再做缩放模拟隶/篆的比例
         tmp = Image.new("RGBA", (CW, CH), (0, 0, 0, 0))
         dt = ImageDraw.Draw(tmp)
-        dt.text((CW // 2, CH // 2 - 2), "永", font=f, fill=(38, 34, 30, 255), anchor="mm")
+        dt.text((CW // 2, CH // 2), "永", font=f, fill=(38, 34, 30, 255), anchor="mm")
 
         if styl == "li":
             tmp = tmp.resize((int(CW * 1.12), int(CH * 0.82)), Image.LANCZOS)

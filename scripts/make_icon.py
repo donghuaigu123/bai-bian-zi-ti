@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 百变字体 · 图标生成
-意象：一张宣纸练习纸 —— 朱丝田字格，格中一个行书「字」。
+意象：一张宣纸练习纸 —— 纸边一道朱框，朱丝田字格，格中一个行书「字」。
 输出：
   app/res/mipmap-*/ic_launcher.png        传统图标（自带圆角）
   app/res/mipmap-*/ic_launcher_fg.png     自适应图标前景（透明底）
@@ -20,7 +20,12 @@ FONT_PATH = os.path.join(ROOT, "app", "assets", "fonts", "ZhiMangXing.ttf")  # �
 S = 1024
 PAPER = (243, 234, 216)
 INK = (36, 31, 25)
-GRID = (178, 86, 71)          # 朱丝格
+GRID = (150, 54, 42)          # 朱丝格（加深）
+FRAME = (152, 44, 34)         # 纸边朱框
+
+# 传统图标：外框 0.87、格 0.72；自适应：等比缩进安全区
+LEGACY_FRAME, LEGACY_GRID = 0.925, 0.69
+ADAPT_FRAME, ADAPT_GRID = 0.455, 0.352
 
 
 def _seed():
@@ -70,16 +75,28 @@ def dashed(d, p0, p1, fill, width, dash, gap):
         t = e + gap
 
 
-def grid_layer(size, ratio=0.72, alpha_outer=182, alpha_inner=116):
+def frame_layer(size, ratio=0.925, alpha=198, radius_ratio=0.17):
+    """纸边朱框：细线，圆角与图标外轮廓同心"""
+    layer = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    d = ImageDraw.Draw(layer)
+    ins = (size - size * ratio) / 2
+    lw = max(2, int(round(size * 0.0056)))
+    r = max(1, int(size * radius_ratio - ins)) if radius_ratio else 0
+    d.rounded_rectangle([ins, ins, size - ins - 1, size - ins - 1],
+                        radius=r, outline=FRAME + (alpha,), width=lw)
+    return layer
+
+
+def grid_layer(size, ratio=0.69, alpha_outer=244, alpha_inner=166):
     """朱丝田字格：外框实线 + 中心十字虚线"""
     layer = Image.new("RGBA", (size, size), (0, 0, 0, 0))
     d = ImageDraw.Draw(layer)
     g = size * ratio
     x0 = y0 = (size - g) / 2
     x1 = y1 = x0 + g
-    lw = max(2, int(round(size * 0.0175)))
+    lw = max(2, int(round(size * 0.0188)))
     d.rectangle([x0, y0, x1, y1], outline=GRID + (alpha_outer,), width=lw)
-    lw2 = max(2, int(round(size * 0.0135)))
+    lw2 = max(2, int(round(size * 0.0146)))
     dash = size * 0.048
     gap = size * 0.035
     cx, cy = size / 2, size / 2
@@ -97,11 +114,15 @@ def glyph_mask(ch, px, font_path=FONT_PATH):
     return canvas.crop(canvas.getbbox())
 
 
-def build_icon(size=S, with_paper=True, grid_ratio=0.72, ch="字",
-               font_path=FONT_PATH, glyph_ratio=0.66):
+def build_icon(size=S, with_paper=True, grid_ratio=LEGACY_GRID, frame_ratio=LEGACY_FRAME,
+               ch="字", font_path=FONT_PATH, glyph_ratio=0.66, frame_radius=None):
     _seed()
     img = (paper_base(size).convert("RGBA") if with_paper
            else Image.new("RGBA", (size, size), (0, 0, 0, 0)))
+
+    if frame_ratio > 0:
+        rr = frame_radius if frame_radius is not None else (0.17 if with_paper else 0.012)
+        img = Image.alpha_composite(img, frame_layer(size, frame_ratio, radius_ratio=rr))
 
     if grid_ratio > 0:
         img = Image.alpha_composite(img, grid_layer(size, grid_ratio))
@@ -141,8 +162,8 @@ def main():
         os.makedirs(folder, exist_ok=True)
         master.resize((px, px), Image.LANCZOS).save(os.path.join(folder, "ic_launcher.png"), optimize=True)
 
-    # 自适应：前景放田字格 + 字（整体收进安全区），背景铺纸纹
-    fg = build_icon(S, False, grid_ratio=0.60, glyph_ratio=0.64)
+    # 自适应：前景放朱框 + 田字格 + 字（整体收进安全区），背景铺纸纹
+    fg = build_icon(S, False, grid_ratio=ADAPT_GRID, frame_ratio=ADAPT_FRAME, glyph_ratio=0.68)
     bg = paper_base(S)
     for d, px in DENS_FG.items():
         folder = os.path.join(RES, "mipmap-" + d)

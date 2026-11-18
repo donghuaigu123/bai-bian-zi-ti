@@ -6,14 +6,14 @@
 # 用法：
 #   export ANDROID_HOME=/path/to/android-sdk
 #   ./build.sh
-# 产物：./百变字体-v2.1.apk
+# 产物：./百变字体-v2.2.apk
 
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 APP="$ROOT/app"
 BUILD="$ROOT/build"
-OUT="$ROOT/百变字体-v2.1.apk"
+OUT="$ROOT/百变字体-v2.2.apk"
 
 ANDROID_HOME="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-$ROOT/.android-sdk}}"
 BT_VERSION="${BT_VERSION:-34.0.0}"
@@ -62,8 +62,8 @@ echo "▶ [3/7] aapt2 link（打包 assets 与字体）"
   --java "$BUILD/gen" \
   --min-sdk-version 23 \
   --target-sdk-version 34 \
-  --version-code 21 \
-  --version-name "2.1" \
+  --version-code 22 \
+  --version-name "2.2" \
   --auto-add-overlay \
   "$BUILD/res.zip"
 
