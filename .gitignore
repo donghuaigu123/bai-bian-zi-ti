@@ -19,3 +19,6 @@ Thumbs.db
 # Python 缓存
 __pycache__/
 *.pyc
+
+# 签名文件不入库（构建时首台机器自动生成，后续沿用）
+.signing/

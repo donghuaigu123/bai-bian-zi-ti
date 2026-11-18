@@ -4,7 +4,26 @@
 
 Android · 完全离线 · 不申请联网权限 · 开源
 
-📦 **[下载安装包：BaiBianFont-v1.0.apk](https://github.com/donghuaigu123/bai-bian-zi-ti/releases/download/v1.0/BaiBianFont-v1.0.apk)**（Android 6.0 / API 23 及以上）
+📦 **[下载安装包：BaiBianFont-v2.0.apk](https://github.com/donghuaigu123/bai-bian-zi-ti/releases/download/v2.0/BaiBianFont-v2.0.apk)**（Android 6.0 / API 23 及以上）
+
+<img src="docs/icon-512.png" width="120" align="right" alt="百变字体图标">
+
+---
+
+## 界面：一方宣纸，一枚朱印
+
+2.0 版重做了图标与全部界面，取意「书斋」：宣纸为底、墨色为字、朱砂为印。
+
+- **图标**：宣纸底色上钤一枚朱砂方印，印文是楷书「变」，印面留着石章的磕碰与印泥的浓淡；
+- **界面**：标题与按钮使用内置毛笔楷书，卡片是册页双框，步骤用「壹 · 贰 · 叁」，
+  分隔线取自古籍界栏，滑块把手做成菱形朱印；
+- **结果页**：深墨底、泥金细边，作品以白卡纸装裱呈现，像把字裱了起来。
+
+<p align="center">
+  <img src="docs/screenshot-home.png" width="260" alt="首页">
+  <img src="docs/screenshot-advanced.png" width="260" alt="排版设置">
+  <img src="docs/screenshot-result.png" width="260" alt="生成结果">
+</p>
 
 ---
 
@@ -23,7 +42,7 @@ Android · 完全离线 · 不申请联网权限 · 开源
 
 > ① 写下文字 → ② 点一个字体 → ③ 点「生成作品」
 
-字体卡上直接显示该字体的「永」字样张，不用挨个试。版式给了一套调好的默认值，想改再展开「更多排版设置」；也可以点「🎲 随机搭配」直接换一套。
+字体卡上直接显示该字体的「永」字样张，不用挨个试。版式给了一套调好的默认值，想改再展开「更多排版设置」；也可以点「随手一换」直接换一套。
 
 ## 字体：15 款，覆盖全部主要书体（12 款内置字库 + 系统黑体 + 2 款风格化）
 
@@ -87,7 +106,7 @@ Android · 完全离线 · 不申请联网权限 · 开源
 ```bash
 export ANDROID_HOME=/path/to/android-sdk
 ./build.sh
-# 产物：百变字体-v1.0.apk
+# 产物：百变字体-v2.0.apk
 ```
 
 构建脚本会依次执行：生成派生资源（字体清单 / 缺字位图 / 缩略图）→ `aapt2` 编译与链接 →
@@ -105,7 +124,8 @@ app/
     fonts/                                      12 款字库 + 许可原文 + 缩略图
     fonts.js  font-coverage.js                  构建生成的清单与缺字位图
 scripts/
-  gen_assets.py                                 生成上述派生资源
+  gen_assets.py                                 生成字体清单 / 缺字位图 / 缩略图
+  make_icon.py                                  生成应用图标（含自适应图标前景背景）
 build.sh                                        一键构建
 FONTS.md                                        字体来源与授权说明
 ```
@@ -119,6 +139,13 @@ FONTS.md                                        字体来源与授权说明
   逐字做隶/篆的风格化变形，并精确控制字距。
 - **先排版后分页**：先按字体度量算出断行/断列，再按固定版心切页，所以多页尺寸天然一致。
 - **图片分块回传**：`toDataURL` 的结果按 96KB 分块经 JS 桥传回原生层，规避单次大字符串限制。
+
+## 版本
+
+| 版本 | 内容 |
+|------|------|
+| 2.0 | 全新图标与界面（宣纸朱印 · 书斋意象）；状态栏融入纸色；排版与出图逻辑不变 |
+| 1.0 | 首个版本：15 款字体、六种纸张、横竖排与界格、自动分页、缺字回退 |
 
 ## 授权
 

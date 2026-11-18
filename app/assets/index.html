@@ -4,7 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="format-detection" content="telephone=no">
+<meta name="theme-color" content="#f4ebd9">
 <title>百变字体</title>
+<link rel="icon" href="data:,">
 <link rel="stylesheet" href="app.css">
 </head>
 <body>
@@ -15,7 +17,7 @@
       <div class="seal-mini">变</div>
       <div class="brand-txt">
         <h1>百变字体</h1>
-        <p>字随心动 · 一纸成书</p>
+        <p><i></i>字随心转 · 一纸风雅<i></i></p>
       </div>
     </div>
     <button id="btnImport" class="ghost-btn" type="button">＋ 我的字体</button>
@@ -25,10 +27,10 @@
 
     <section class="card">
       <div class="step-head">
-        <span class="step-no">1</span><h2>写下文字</h2>
+        <span class="step-no">壹</span><h2>写下文字</h2>
         <button class="link" id="btnSample" type="button">填入示例</button>
       </div>
-      <textarea id="textInput" rows="5" spellcheck="false"
+      <textarea id="textInput" rows="4" spellcheck="false"
         placeholder="粘贴或输入文字。诗词、对联、文章、祝福语都可以……"></textarea>
       <div class="row-between">
         <span class="hint" id="charCount">0 字</span>
@@ -38,7 +40,7 @@
 
     <section class="card">
       <div class="step-head">
-        <span class="step-no">2</span><h2>挑字体</h2>
+        <span class="step-no">贰</span><h2>挑字体</h2>
         <span class="hint" id="fontCount"></span>
       </div>
       <div class="cat-row" id="catRow"></div>
@@ -48,8 +50,8 @@
 
     <section class="card">
       <div class="step-head">
-        <span class="step-no">3</span><h2>排版式</h2>
-        <button class="link" id="btnShuffle" type="button">🎲 随机搭配</button>
+        <span class="step-no">叁</span><h2>排版式</h2>
+        <button class="link" id="btnShuffle" type="button">随手一换</button>
       </div>
 
       <div class="field">
@@ -107,7 +109,7 @@
     </section>
 
     <div class="tip">
-      <b>怎么用</b>　写好字 → 点一个字体 → 点最下面的大按钮，就这么简单。长文会自动换行、自动分页，每页尺寸完全一致，整篇只用你选的这一种字体，风格统一。<br>
+      <b>用法</b>写好字 → 点一个字体 → 点最下面的大按钮，就这么简单。长文会自动换行、自动分页，每页尺寸完全一致，整篇只用你选的这一种字体，风格统一。<br>
       遇到字库里没有的生僻字，会自动用楷书补上，不会出现方框。
     </div>
 
@@ -115,7 +117,7 @@
   </main>
 
   <footer class="actionbar">
-    <button id="btnGenerate" class="btn-primary" type="button">生成作品</button>
+    <button id="btnGenerate" class="btn-primary" type="button"><span>生成作品</span></button>
   </footer>
 </div>
 
@@ -127,7 +129,7 @@
   </div>
   <div class="result-scroll" id="resultScroll"></div>
   <div class="result-actions">
-    <button id="btnSaveAll" class="btn-primary" type="button">⬇ 保存全部到相册</button>
+    <button id="btnSaveAll" class="btn-primary" type="button"><span>存入相册</span></button>
     <p class="save-hint" id="saveHint"></p>
   </div>
 </div>

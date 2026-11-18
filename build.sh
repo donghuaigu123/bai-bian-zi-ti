@@ -6,14 +6,14 @@
 # 用法：
 #   export ANDROID_HOME=/path/to/android-sdk
 #   ./build.sh
-# 产物：./百变字体-v1.0.apk
+# 产物：./百变字体-v2.0.apk
 
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 APP="$ROOT/app"
 BUILD="$ROOT/build"
-OUT="$ROOT/百变字体-v1.0.apk"
+OUT="$ROOT/百变字体-v2.0.apk"
 
 ANDROID_HOME="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-$ROOT/.android-sdk}}"
 BT_VERSION="${BT_VERSION:-34.0.0}"
@@ -62,8 +62,8 @@ echo "▶ [3/7] aapt2 link（打包 assets 与字体）"
   --java "$BUILD/gen" \
   --min-sdk-version 23 \
   --target-sdk-version 34 \
-  --version-code 1 \
-  --version-name "1.0" \
+  --version-code 20 \
+  --version-name "2.0" \
   --auto-add-overlay \
   "$BUILD/res.zip"
 
@@ -88,7 +88,8 @@ cp "$BUILD/base.apk" "$BUILD/unsigned.apk"
 
 # ---------------------------------------------------------------- 7. 签名
 echo "▶ [7/7] 生成签名并打包"
-KS="$BUILD/release.keystore"
+KS="$ROOT/.signing/release.keystore"
+mkdir -p "$ROOT/.signing"
 STORE_PASS="baibianziti2026"
 if [ ! -f "$KS" ]; then
   keytool -genkeypair -noprompt \

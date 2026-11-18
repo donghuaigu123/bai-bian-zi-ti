@@ -14,6 +14,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.util.Base64;
+import android.view.View;
 import android.view.Window;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebResourceRequest;
@@ -63,7 +64,11 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(0xFF8C2F26);
+            // 状态栏融入宣纸底色，图标转深色，整体如一卷展开的纸
+            getWindow().setStatusBarColor(0xFFF4EBD9);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
 
         web = new WebView(this);
@@ -82,7 +87,7 @@ public class MainActivity extends Activity {
         s.setBuiltInZoomControls(false);
         s.setDisplayZoomControls(false);
         s.setMediaPlaybackRequiresUserGesture(true);
-        web.setBackgroundColor(0xFFF6F0E4);
+        web.setBackgroundColor(0xFFF2E9D8);
         web.addJavascriptInterface(new Bridge(), "FontApp");
 
         web.setWebViewClient(new WebViewClient() {
