@@ -159,7 +159,7 @@ def seal_unit(side, ch="变", font_path=FONT_PATH):
     return unit.rotate(-1.4, resample=Image.BICUBIC, expand=False)
 
 
-def build_icon(size=S, with_paper=True, seal_ratio=0.64, ch="变", font_path=FONT_PATH):
+def build_icon(size=S, with_paper=True, seal_ratio=0.68, ch="变", font_path=FONT_PATH):
     _seed()
     if with_paper:
         img = paper_base(size).convert("RGBA")
@@ -195,7 +195,7 @@ DENS_FG = {"mdpi": 108, "hdpi": 162, "xhdpi": 216, "xxhdpi": 324, "xxxhdpi": 432
 
 
 def main():
-    master = round_mask(build_icon(S, True, 0.64), 0.17)
+    master = round_mask(build_icon(S, True, 0.68), 0.17)
     for d, px in DENS.items():
         folder = os.path.join(RES, "mipmap-" + d)
         os.makedirs(folder, exist_ok=True)
