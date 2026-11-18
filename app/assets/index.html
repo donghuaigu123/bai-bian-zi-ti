@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<title>百变字体</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+<div class="app" id="app">
+  <header class="topbar">
+    <div class="brand">
+      <div class="seal-mini">变</div>
+      <div class="brand-txt">
+        <h1>百变字体</h1>
+        <p>字随心动 · 一纸成书</p>
+      </div>
+    </div>
+    <button id="btnImport" class="ghost-btn" type="button">＋ 我的字体</button>
+  </header>
+
+  <main class="scroll" id="mainScroll">
+
+    <section class="card">
+      <div class="step-head">
+        <span class="step-no">1</span><h2>写下文字</h2>
+        <button class="link" id="btnSample" type="button">填入示例</button>
+      </div>
+      <textarea id="textInput" rows="5" spellcheck="false"
+        placeholder="粘贴或输入文字。诗词、对联、文章、祝福语都可以……"></textarea>
+      <div class="row-between">
+        <span class="hint" id="charCount">0 字</span>
+        <button class="link" id="btnClear" type="button">清空</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="step-head">
+        <span class="step-no">2</span><h2>挑字体</h2>
+        <span class="hint" id="fontCount"></span>
+      </div>
+      <div class="cat-row" id="catRow"></div>
+      <div id="fontGrid" class="font-grid"></div>
+      <p class="notice" id="fontNotice"></p>
+    </section>
+
+    <section class="card">
+      <div class="step-head">
+        <span class="step-no">3</span><h2>排版式</h2>
+        <button class="link" id="btnShuffle" type="button">🎲 随机搭配</button>
+      </div>
+
+      <div class="field">
+        <label>纸张</label>
+        <div class="chips" id="paperChips"></div>
+      </div>
+      <div class="field">
+        <label>方向</label>
+        <div class="chips" id="layoutChips"></div>
+      </div>
+
+      <button class="adv-toggle" id="btnToggleAdv" type="button">
+        <span>更多排版设置</span><span class="chev" id="advChev">▾</span>
+      </button>
+
+      <div id="advPanel" class="adv hidden">
+        <div class="field">
+          <label>字号 <span class="hint" id="sizeHint">自动</span></label>
+          <input type="range" id="sizeRange" min="0" max="4" value="0" step="1">
+          <div class="scale-marks"><span>自动</span><span>小</span><span>中</span><span>大</span><span>特大</span></div>
+        </div>
+        <div class="field">
+          <label>字距</label>
+          <div class="chips" id="trackChips"></div>
+        </div>
+        <div class="field">
+          <label>行距</label>
+          <div class="chips" id="leadingChips"></div>
+        </div>
+        <div class="field">
+          <label>对齐</label>
+          <div class="chips" id="alignChips"></div>
+        </div>
+        <div class="field">
+          <label>界格</label>
+          <div class="chips" id="gridChips"></div>
+        </div>
+        <div class="field">
+          <label>页边距</label>
+          <div class="chips" id="marginChips"></div>
+        </div>
+        <div class="field">
+          <label>标题（可留空）</label>
+          <input type="text" id="titleInput" maxlength="16" placeholder="如：将进酒">
+        </div>
+        <div class="field">
+          <label>落款（可留空）</label>
+          <input type="text" id="signInput" maxlength="20" placeholder="如：甲辰秋月 · 书于灯下">
+        </div>
+        <div class="field">
+          <label>印章</label>
+          <div class="chips" id="sealChips"></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="tip">
+      <b>怎么用</b>　写好字 → 点一个字体 → 点最下面的大按钮，就这么简单。长文会自动换行、自动分页，每页尺寸完全一致，整篇只用你选的这一种字体，风格统一。<br>
+      遇到字库里没有的生僻字，会自动用楷书补上，不会出现方框。
+    </div>
+
+    <div class="credits" id="credits"></div>
+  </main>
+
+  <footer class="actionbar">
+    <button id="btnGenerate" class="btn-primary" type="button">生成作品</button>
+  </footer>
+</div>
+
+<div id="resultLayer" class="result-layer hidden">
+  <div class="result-head">
+    <button id="btnBack" class="back-btn" type="button">‹ 返回</button>
+    <span id="resultInfo" class="result-info">生成中…</span>
+    <button id="btnRegen" class="link" type="button">重做</button>
+  </div>
+  <div class="result-scroll" id="resultScroll"></div>
+  <div class="result-actions">
+    <button id="btnSaveAll" class="btn-primary" type="button">⬇ 保存全部到相册</button>
+    <p class="save-hint" id="saveHint"></p>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="fonts.js"></script>
+<script src="font-coverage.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

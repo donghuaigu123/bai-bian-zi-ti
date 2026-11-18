@@ -1,0 +1,21 @@
+# 构建中间产物（含签名私钥，绝不要提交）
+build/
+*.keystore
+*.jks
+*.p12
+*.idsig
+
+# 交付的安装包通过 GitHub Release 分发，仓库内不留二进制
+*.apk
+
+# 编辑器 / 系统
+.gradle/
+.idea/
+*.iml
+local.properties
+.DS_Store
+Thumbs.db
+
+# Python 缓存
+__pycache__/
+*.pyc

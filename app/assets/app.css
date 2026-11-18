@@ -1,0 +1,320 @@
+/* ==========================================================================
+   百变字体 · 界面样式
+   配色：宣纸米白 + 朱砂 + 墨色。界面只用系统字体，不依赖内置字库。
+   ========================================================================== */
+
+:root{
+  --paper:#f7f1e5;
+  --paper-2:#fffdf7;
+  --ink:#2a2724;
+  --ink-2:#5b544c;
+  --ink-3:#8b8378;
+  --line:#e6dcc8;
+  --line-2:#d8cbb2;
+  --red:#9e2b25;
+  --red-2:#b8402f;
+  --red-soft:#f6e6e2;
+  --shadow:0 2px 10px rgba(70,50,30,.06);
+  --radius:16px;
+}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+
+html,body{
+  margin:0;padding:0;height:100%;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Noto Sans CJK SC",
+    "Source Han Sans SC","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased;
+  overscroll-behavior:none;
+}
+
+body{
+  background-image:
+    radial-gradient(circle at 18% 12%, rgba(190,160,110,.10), transparent 42%),
+    radial-gradient(circle at 82% 78%, rgba(190,160,110,.09), transparent 45%);
+}
+
+.app{display:flex;flex-direction:column;height:100%}
+
+/* ------------------------------------------------------------------ 顶栏 */
+.topbar{
+  flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;
+  gap:10px;padding:14px 16px 12px;
+  background:linear-gradient(180deg,#8f2b23,#a33327);
+  color:#fff8ee;box-shadow:0 2px 12px rgba(120,40,30,.20);
+  padding-top:calc(14px + env(safe-area-inset-top));
+}
+.brand{display:flex;align-items:center;gap:11px;min-width:0}
+.seal-mini{
+  flex:0 0 auto;width:40px;height:40px;border-radius:9px;
+  background:#fff6e6;color:#9e2b25;
+  display:flex;align-items:center;justify-content:center;
+  font-family:"KaiTi","STKaiti",serif;font-size:25px;font-weight:700;
+  box-shadow:inset 0 0 0 2px rgba(158,43,37,.28);
+}
+.brand-txt{min-width:0}
+.brand-txt h1{
+  margin:0;font-size:19px;letter-spacing:2px;font-weight:700;
+  font-family:"KaiTi","STKaiti","Songti SC",serif;
+}
+.brand-txt p{
+  margin:2px 0 0;font-size:11px;letter-spacing:1.1px;
+  color:rgba(255,246,230,.76);
+}
+.ghost-btn{
+  flex:0 0 auto;border:1px solid rgba(255,246,230,.55);background:rgba(255,246,230,.12);
+  color:#fff6e6;font-size:12px;padding:8px 11px;border-radius:999px;
+  font-family:inherit;
+}
+.ghost-btn:active{background:rgba(255,246,230,.24)}
+
+/* ------------------------------------------------------------------ 滚动区 */
+.scroll{
+  flex:1 1 auto;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  padding:14px 14px 18px;
+}
+
+.card{
+  background:var(--paper-2);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:14px 14px 16px;
+  margin-bottom:13px;
+  box-shadow:var(--shadow);
+}
+
+.step-head{display:flex;align-items:center;gap:8px;margin-bottom:11px}
+.step-no{
+  flex:0 0 auto;width:21px;height:21px;border-radius:50%;
+  background:var(--red);color:#fff;font-size:12px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+}
+.step-head h2{
+  margin:0;font-size:15.5px;font-weight:700;letter-spacing:1px;
+  font-family:"KaiTi","STKaiti","Songti SC",serif;
+}
+.step-head .hint{margin-left:auto}
+.hint{font-size:11.5px;color:var(--ink-3);line-height:1.5}
+
+.link{
+  margin-left:auto;border:0;background:transparent;color:var(--red);
+  font-size:12.5px;padding:4px 2px;font-family:inherit;
+}
+.link:active{opacity:.6}
+
+/* ------------------------------------------------------------------ 输入 */
+textarea{
+  width:100%;border:1px solid var(--line-2);border-radius:12px;
+  background:#fffef9;color:var(--ink);
+  padding:12px 12px;font-size:15.5px;line-height:1.75;
+  font-family:"KaiTi","STKaiti","Songti SC",serif;
+  resize:none;outline:none;
+}
+textarea:focus{border-color:var(--red-2);box-shadow:0 0 0 3px rgba(184,64,47,.09)}
+textarea::placeholder{color:#bdb3a2}
+
+input[type=text]{
+  width:100%;border:1px solid var(--line-2);border-radius:10px;
+  background:#fffef9;padding:10px 12px;font-size:14px;outline:none;
+  font-family:inherit;color:var(--ink);
+}
+input[type=text]:focus{border-color:var(--red-2)}
+
+.row-between{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+
+/* ------------------------------------------------------------------ 分类 */
+.cat-row{
+  display:flex;gap:7px;overflow-x:auto;padding:1px 1px 9px;
+  scrollbar-width:none;-ms-overflow-style:none;
+}
+.cat-row::-webkit-scrollbar{display:none}
+.cat{
+  flex:0 0 auto;border:1px solid var(--line-2);background:#fffdf6;
+  color:var(--ink-2);font-size:12.5px;padding:6px 12px;border-radius:999px;
+  font-family:inherit;white-space:nowrap;
+}
+.cat.on{background:var(--red);border-color:var(--red);color:#fff}
+
+/* ------------------------------------------------------------------ 字体卡 */
+.font-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.font-card{
+  position:relative;border:1.5px solid var(--line);border-radius:12px;
+  background:#fffef9;padding:6px 4px 7px;text-align:center;
+  transition:border-color .15s,background .15s;
+  overflow:hidden;
+}
+.font-card.on{
+  border-color:var(--red);background:#fff8f4;
+  box-shadow:0 0 0 2.5px rgba(158,43,37,.10);
+}
+.font-card .thumb{
+  width:100%;height:56px;display:block;object-fit:contain;
+  margin-bottom:2px;pointer-events:none;
+}
+.font-card .nm{
+  display:block;font-size:11.5px;font-weight:600;color:var(--ink);
+  letter-spacing:.3px;line-height:1.3;
+}
+.font-card .sub{
+  display:block;font-size:9.5px;color:var(--ink-3);margin-top:1px;
+  line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.font-badge{
+  position:absolute;top:3px;right:3px;
+  font-size:8px;line-height:1;padding:2.5px 4px;border-radius:4px;
+  background:var(--red-soft);color:var(--red);letter-spacing:.2px;
+}
+.font-badge.master{background:#eef3ec;color:#3f6b46}
+.font-badge.own{background:#eef1f7;color:#3d5578}
+
+.notice{
+  margin:10px 0 0;font-size:11px;line-height:1.65;color:var(--ink-3);
+  padding-top:9px;border-top:1px dashed var(--line);
+}
+
+/* ------------------------------------------------------------------ chips */
+.field{margin-bottom:12px}
+.field:last-child{margin-bottom:0}
+.field>label{
+  display:block;font-size:12px;color:var(--ink-2);margin-bottom:7px;
+  letter-spacing:.6px;font-weight:600;
+}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{
+  border:1px solid var(--line-2);background:#fffdf6;color:var(--ink-2);
+  font-size:12.5px;padding:6.5px 13px;border-radius:999px;
+  font-family:inherit;transition:.15s;
+}
+.chip.on{background:var(--red);border-color:var(--red);color:#fff}
+.chip:active{transform:scale(.97)}
+
+/* ------------------------------------------------------------------ 折叠 */
+.adv-toggle{
+  width:100%;display:flex;align-items:center;justify-content:space-between;
+  border:1px dashed var(--line-2);background:transparent;color:var(--ink-2);
+  font-size:12.5px;padding:10px 12px;border-radius:10px;margin:2px 0 0;
+  font-family:inherit;
+}
+.adv-toggle .chev{transition:transform .2s;color:var(--ink-3)}
+.adv-toggle.open .chev{transform:rotate(180deg)}
+.adv{margin-top:13px;padding-top:13px;border-top:1px dashed var(--line)}
+.hidden{display:none!important}
+
+input[type=range]{
+  width:100%;-webkit-appearance:none;height:26px;background:transparent;
+}
+input[type=range]::-webkit-slider-runnable-track{
+  height:4px;border-radius:2px;background:var(--line-2);
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:19px;height:19px;border-radius:50%;
+  background:var(--red);margin-top:-7.5px;border:2.5px solid #fff;
+  box-shadow:0 1px 4px rgba(120,40,30,.35);
+}
+.scale-marks{
+  display:flex;justify-content:space-between;font-size:10px;color:var(--ink-3);
+  margin-top:-2px;padding:0 2px;
+}
+
+/* ------------------------------------------------------------------ 提示 */
+.tip{
+  font-size:11.5px;line-height:1.75;color:var(--ink-2);
+  background:rgba(158,43,37,.045);
+  border-left:3px solid rgba(158,43,37,.35);
+  border-radius:0 10px 10px 0;padding:10px 12px;margin-bottom:12px;
+}
+.tip b{color:var(--red)}
+.credits{
+  font-size:10.5px;line-height:1.7;color:var(--ink-3);
+  padding:0 4px 6px;text-align:justify;
+}
+
+/* ------------------------------------------------------------------ 动作栏 */
+.actionbar{
+  flex:0 0 auto;padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+  background:linear-gradient(180deg,rgba(247,241,229,0),var(--paper) 38%);
+  border-top:1px solid var(--line);
+}
+.btn-primary{
+  width:100%;border:0;border-radius:13px;padding:15px;
+  background:linear-gradient(180deg,#ad362a,#8f2620);
+  color:#fff8ee;font-size:16.5px;font-weight:700;letter-spacing:3px;
+  font-family:"KaiTi","STKaiti",serif;
+  box-shadow:0 4px 14px rgba(140,40,30,.28);
+}
+.btn-primary:active{transform:translateY(1px);box-shadow:0 2px 8px rgba(140,40,30,.24)}
+.btn-primary:disabled{opacity:.55;box-shadow:none}
+
+/* ------------------------------------------------------------------ 结果层 */
+.result-layer{
+  position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;
+  background:var(--paper);
+}
+.result-head{
+  flex:0 0 auto;display:flex;align-items:center;gap:10px;
+  padding:12px 14px;padding-top:calc(12px + env(safe-area-inset-top));
+  background:linear-gradient(180deg,#8f2b23,#a33327);color:#fff8ee;
+}
+.back-btn{
+  border:0;background:transparent;color:#fff8ee;font-size:14px;
+  padding:4px 2px;font-family:inherit;
+}
+.result-info{font-size:12px;color:rgba(255,246,230,.92);margin:0 auto}
+.result-head .link{color:#ffe9c9}
+.result-scroll{
+  flex:1 1 auto;overflow-y:auto;padding:14px;
+  display:flex;flex-direction:column;gap:14px;
+  background:
+    radial-gradient(circle at 30% 10%, rgba(190,160,110,.10), transparent 55%),
+    #efe7d8;
+}
+.result-scroll img{
+  width:100%;height:auto;display:block;border-radius:6px;
+  box-shadow:0 4px 18px rgba(60,40,20,.18);
+  background:#fff;
+}
+.result-actions{
+  flex:0 0 auto;padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+  background:var(--paper);border-top:1px solid var(--line);
+}
+.save-hint{
+  margin:8px 2px 0;font-size:11px;color:var(--ink-3);text-align:center;line-height:1.5;
+}
+
+/* ------------------------------------------------------------------ toast */
+.toast{
+  position:fixed;left:50%;bottom:88px;transform:translateX(-50%) translateY(10px);
+  background:rgba(42,39,36,.94);color:#fff8ee;
+  font-size:13px;line-height:1.5;padding:10px 18px;border-radius:999px;
+  max-width:84vw;text-align:center;opacity:0;pointer-events:none;
+  transition:opacity .2s,transform .2s;z-index:99;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* 小屏微调 */
+@media (max-width:340px){
+  .font-grid{grid-template-columns:repeat(2,1fr)}
+  .brand-txt h1{font-size:17px}
+}
+
+
+/* ==========================================================================
+   字体声明（与 app.js 的 FONTS 表一一对应）
+   实际加载走 FontFace API，这里保留声明作为兜底与静态引用来源。
+   ========================================================================== */
+@font-face{font-family:BB-WenKai;src:url('fonts/LXGWWenKai-Regular.ttf');font-display:swap}
+@font-face{font-family:BB-Kai;src:url('fonts/MaShanZheng.ttf');font-display:swap}
+@font-face{font-family:BB-XingKai;src:url('fonts/LongCang.ttf');font-display:swap}
+@font-face{font-family:BB-Lishu;src:url('fonts/lishu.ttf');font-display:swap}
+@font-face{font-family:BB-Zhuan;src:url('fonts/zhuanshu.ttf');font-display:swap}
+@font-face{font-family:BB-Xing;src:url('fonts/ZhiMangXing.ttf');font-display:swap}
+@font-face{font-family:BB-Cao;src:url('fonts/LiuJianMaoCao.ttf');font-display:swap}
+@font-face{font-family:BB-WeiBei;src:url('fonts/ZCOOLXiaoWei.ttf');font-display:swap}
+@font-face{font-family:BB-LiStyle;src:url('fonts/ZCOOLXiaoWei.ttf');font-display:swap}
+@font-face{font-family:BB-ZhuanStyle;src:url('fonts/MaShanZheng.ttf');font-display:swap}
+@font-face{font-family:BB-Song;src:url('fonts/NotoSerifSC-GB.ttf');font-display:swap}
+@font-face{font-family:BB-HuangYou;src:url('fonts/heiti.ttf');font-display:swap}
+@font-face{font-family:BB-KuaiLe;src:url('fonts/ZCOOLKuaiLe.ttf');font-display:swap}
+@font-face{font-family:BB-Marker;src:url('fonts/LXGWMarkerGothic-Regular.ttf');font-display:swap}
