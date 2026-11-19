@@ -4,7 +4,7 @@
 
 Android · 完全离线 · 不申请联网权限 · 开源
 
-📦 **[下载安装包：BaiBianFont-v2.2.apk](https://github.com/donghuaigu123/bai-bian-zi-ti/releases/download/v2.2/BaiBianFont-v2.2.apk)**（Android 6.0 / API 23 及以上）
+📦 **[下载安装包：BaiBianFont-v2.3.apk](https://github.com/donghuaigu123/bai-bian-zi-ti/releases/download/v2.3/BaiBianFont-v2.3.apk)**（Android 6.0 / API 23 及以上）
 
 <img src="docs/icon-512.png" width="120" align="right" alt="百变字体图标">
 
@@ -68,7 +68,7 @@ Android · 完全离线 · 不申请联网权限 · 开源
 
 字体按 **楷 / 隶 / 篆 / 行草 / 魏碑 / 宋黑 / 创意** 分类，点分类可筛选。
 
-**「＋ 我的字体」** 可以导入你自己拥有的 TTF / OTF，只保存在本机，适合有正版商业字库（如名家集字）的用户。
+以上 **15 款全部随 APK 打包**，不联网、不读取外部字体文件。
 
 ## 排版：可以自由组合
 
@@ -120,7 +120,7 @@ export ANDROID_HOME=/path/to/android-sdk
 ```
 app/
   AndroidManifest.xml
-  java/com/baibianziti/app/MainActivity.java   WebView 壳：虚拟 HTTPS 源 + 相册保存 + 字体导入
+  java/com/baibianziti/app/MainActivity.java   WebView 壳：虚拟 HTTPS 源 + 相册保存
   res/                                          图标与字符串
   assets/
     index.html  app.css  app.js                 界面与渲染引擎
@@ -147,6 +147,7 @@ FONTS.md                                        字体来源与授权说明
 
 | 版本 | 内容 |
 |------|------|
+| 2.3 | 移除「导入我的字体」：去掉顶栏入口、原生文件选择器与自有字体分类，只保留内置 15 款；顶栏改为居中题名 |
 | 2.2 | 首页 / 卡片 / 结果页统一为「宣纸 + 朱丝田字格」；图标田字格加深、纸边加朱框；修正短文本上下留白与若干对齐问题 |
 | 2.1 | 图标改为「宣纸 + 朱丝田字格 + 行书『字』」，摆正不倾斜；其余同 2.0 |
 | 2.0 | 全新图标与界面（宣纸朱印 · 书斋意象）；状态栏融入纸色；排版与出图逻辑不变 |
@@ -167,7 +168,7 @@ FONTS.md                                        字体来源与授权说明
   写短句、吉祥语、繁体传承字形效果最佳；正文长篇建议选宋体或霞鹜文楷。
 - 「汉隶风 / 金石风」是对开源字库做的横展 / 竖展变形，不是独立的隶书、篆书字库。
 - 本项目在 Linux 沙箱中完成编译与 40 余项浏览器端自动化验收，
-  **原生层（相册写入、字体导入）未在真机点击验证**。
+  **原生层（相册写入）未在真机点击验证**。
 
 ## 致谢
 

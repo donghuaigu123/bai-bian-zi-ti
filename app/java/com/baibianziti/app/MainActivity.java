@@ -3,16 +3,13 @@ package com.baibianziti.app;
 import android.Manifest;
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.provider.OpenableColumns;
 import android.util.Base64;
 import android.view.View;
 import android.view.Window;
@@ -27,12 +24,10 @@ import android.widget.Toast;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -46,11 +41,9 @@ import java.util.Map;
  *    assets 返回。@font-face 与页面严格同源，canvas 不会被跨域字体污染，
  *    toDataURL 一定能导出图片（file:// 方案在部分 WebView 上会失败）。
  * 2. 图片以 base64 分块回传，规避 JavascriptInterface 单次传大字符串的限制。
- * 3. 支持导入用户自有 TTF/OTF 字体，用于扩展隶书、篆书或名家字体。
  */
 public class MainActivity extends Activity {
 
-    private static final int REQ_PICK_FONT = 1001;
     private static final int REQ_STORAGE = 1002;
     private static final String APP_HOST = "appassets.baibianfont.local";
     private static final String APP_ORIGIN = "https://" + APP_HOST + "/";
@@ -159,14 +152,7 @@ public class MainActivity extends Activity {
         headers.put("Cache-Control", "no-store");
 
         try {
-            InputStream is;
-            if (rel.startsWith("userfonts/")) {
-                File dir = new File(getFilesDir(), "customfonts");
-                File f = new File(dir, new File(rel).getName());
-                is = new FileInputStream(f);
-            } else {
-                is = getAssets().open(rel);
-            }
+            InputStream is = getAssets().open(rel);
             return new WebResourceResponse(mimeOf(rel), "UTF-8", 200, "OK", headers, is);
         } catch (Exception e) {
             byte[] body = ("asset not found: " + rel).getBytes();
@@ -234,101 +220,9 @@ public class MainActivity extends Activity {
 
         @JavascriptInterface
         public String version() {
-            return "1.0";
+            return "2.3";
         }
 
-        /** 打开系统文件选择器，导入用户自有字体。 */
-        @JavascriptInterface
-        public void pickFont() {
-            runOnUiThread(() -> {
-                try {
-                    Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                    i.addCategory(Intent.CATEGORY_OPENABLE);
-                    i.setType("*/*");
-                    i.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{
-                            "font/ttf", "font/otf", "application/x-font-ttf",
-                            "application/x-font-otf", "application/octet-stream"
-                    });
-                    i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    i.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-                    startActivityForResult(Intent.createChooser(i, "选择字体文件 TTF / OTF"), REQ_PICK_FONT);
-                } catch (Exception e) {
-                    toast("无法打开文件选择器：" + e.getMessage());
-                }
-            });
-        }
-
-        /** 列出已导入的自定义字体（JSON 数组）。 */
-        @JavascriptInterface
-        public String listCustomFonts() {
-            File dir = new File(getFilesDir(), "customfonts");
-            File[] fs = dir.listFiles();
-            StringBuilder sb = new StringBuilder("[");
-            if (fs != null) {
-                boolean first = true;
-                for (File f : fs) {
-                    String n = f.getName();
-                    if (!n.toLowerCase(Locale.US).matches(".*\\.(ttf|otf|woff2?)$")) continue;
-                    if (!first) sb.append(",");
-                    first = false;
-                    sb.append("\"").append(n.replace("\"", "\\\"")).append("\"");
-                }
-            }
-            return sb.append("]").toString();
-        }
-
-        @JavascriptInterface
-        public void removeCustomFont(String name) {
-            File f = new File(new File(getFilesDir(), "customfonts"), new File(name).getName());
-            if (f.exists()) f.delete();
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int req, int result, Intent data) {
-        super.onActivityResult(req, result, data);
-        if (req != REQ_PICK_FONT || result != RESULT_OK || data == null || data.getData() == null) return;
-        Uri uri = data.getData();
-        try {
-            String display = queryDisplayName(uri);
-            if (display == null) display = "custom.ttf";
-            String safe = display.replaceAll("[^a-zA-Z0-9._-]", "_");
-            if (!safe.toLowerCase(Locale.US).matches(".*\\.(ttf|otf|woff2?)$")) safe += ".ttf";
-            File dir = new File(getFilesDir(), "customfonts");
-            if (!dir.exists()) dir.mkdirs();
-            File out = new File(dir, System.currentTimeMillis() + "_" + safe);
-            try (InputStream in = getContentResolver().openInputStream(uri);
-                 OutputStream os = new FileOutputStream(out)) {
-                byte[] buf = new byte[16384];
-                int n;
-                while ((n = in.read(buf)) > 0) os.write(buf, 0, n);
-            }
-            if (out.length() < 1024) {
-                out.delete();
-                toast("文件太小，可能不是有效字体");
-                return;
-            }
-            final String fn = out.getName();
-            runOnUiThread(() -> web.evaluateJavascript(
-                    "window.onFontImported && window.onFontImported(" + jsString(fn) + ")", null));
-        } catch (Exception e) {
-            toast("导入失败：" + e.getMessage());
-        }
-    }
-
-    private String queryDisplayName(Uri uri) {
-        Cursor c = null;
-        try {
-            c = getContentResolver().query(uri, null, null, null, null);
-            if (c != null && c.moveToFirst()) {
-                int idx = c.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-                if (idx >= 0) return c.getString(idx);
-            }
-        } catch (Exception ignored) {
-        } finally {
-            if (c != null) c.close();
-        }
-        return null;
     }
 
     private void toast(String msg) {
@@ -400,11 +294,6 @@ public class MainActivity extends Activity {
         String t = s.replaceAll("[\\\\/:*?\"<>|\\r\\n\\t]", "_").trim();
         if (t.length() > 24) t = t.substring(0, 24);
         return t;
-    }
-
-    private static String jsString(String s) {
-        return "\"" + s.replace("\\", "\\\\").replace("\"", "\\\"")
-                .replace("\n", "\\n").replace("\r", "") + "\"";
     }
 
     @Override

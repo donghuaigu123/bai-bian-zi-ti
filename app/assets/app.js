@@ -57,8 +57,7 @@
     { id: 'xing', name: '行草' },
     { id: 'wei', name: '魏碑' },
     { id: 'song', name: '宋黑' },
-    { id: 'fun', name: '创意' },
-    { id: 'own', name: '我的' }
+    { id: 'fun', name: '创意' }
   ];
 
   /* ------------------------------------------------------------------ 排版选项 */
@@ -85,8 +84,7 @@
     seal: 'zhu',
     title: '',
     sign: '',
-    pages: [],
-    custom: []
+    pages: []
   };
 
   /* ------------------------------------------------------------------ 小工具 */
@@ -874,7 +872,6 @@
     var row = $('catRow');
     row.innerHTML = '';
     CATS.forEach(function (c) {
-      if (c.id === 'own' && !state.custom.length) return;
       var b = el('button', 'cat' + (state.cat === c.id ? ' on' : ''), c.name);
       b.type = 'button';
       b.onclick = function () {
@@ -888,31 +885,23 @@
 
   function catMatch(f, cat) {
     if (cat === 'all') return true;
-    if (cat === 'own') return !!f.own;
     return f.cat === cat;
   }
 
   function renderFonts() {
     var grid = $('fontGrid');
     grid.innerHTML = '';
-    var list = FONTS.filter(fontAvailable).concat(state.custom);
+    var list = FONTS.filter(fontAvailable);
     var shown = list.filter(function (f) { return catMatch(f, state.cat); });
 
     shown.forEach(function (f) {
       var card = el('div', 'font-card' + (state.font.id === f.id ? ' on' : ''));
       var badge = '';
-      if (f.own) badge = '<span class="font-badge own">自有</span>';
-      else if (f.master) badge = '<span class="font-badge master">名家</span>';
+      if (f.master) badge = '<span class="font-badge master">名家</span>';
       else if (f.stylize) badge = '<span class="font-badge">风格</span>';
 
-      var thumb;
-      if (f.own) {
-        thumb = '<div class="thumb" style="display:flex;align-items:center;justify-content:center;' +
-          'font-family:' + f.fam + ';font-size:42px;color:#2a2724">永</div>';
-      } else {
-        thumb = '<img class="thumb" src="' + (f.preview || ('fonts/preview/' + f.id + '.png')) +
-          '" alt="' + f.name + '">';
-      }
+      var thumb = '<img class="thumb" src="' + (f.preview || ('fonts/preview/' + f.id + '.png')) +
+        '" alt="' + f.name + '">';
 
       card.innerHTML = badge + thumb +
         '<span class="nm">' + f.name + '</span>' +
@@ -920,10 +909,6 @@
       card.onclick = function () {
         state.font = f;
         renderFonts();
-        if (f.own) {
-          var ff = new FontFace(f.fam, 'url(userfonts/' + encodeURIComponent(f.file) + ')');
-          ff.load().then(function (x) { document.fonts.add(x); }).catch(function () {});
-        }
       };
       grid.appendChild(card);
     });
@@ -1037,30 +1022,6 @@
       setTimeout(generate, 120);
     };
 
-    $('btnImport').onclick = function () {
-      var b = bridge();
-      if (b && b.pickFont) b.pickFont();
-      else toast('请用手机端打开，才能导入本地字体');
-    };
-
-    window.onFontImported = function (fn) {
-      var name = fn.replace(/^\d+_/, '').replace(/\.(ttf|otf|woff2?)$/i, '');
-      var famName = 'BB-User-' + Math.abs(hash(fn));
-      state.custom.push({
-        id: 'own-' + fn,
-        name: name.length > 7 ? name.slice(0, 7) : name,
-        sub: '我导入的字体',
-        cat: 'own',
-        fam: famName,
-        file: fn,
-        own: true
-      });
-      toast('已导入：' + name + '，在上面「我的」里选它');
-      state.cat = 'own';
-      renderCats();
-      renderFonts();
-    };
-
     window.onAndroidBack = function () {
       if (!$('resultLayer').classList.contains('hidden')) {
         $('resultLayer').classList.add('hidden');
@@ -1069,37 +1030,13 @@
       return false;
     };
 
-    // 读取已导入字体
-    var b2 = bridge();
-    if (b2 && b2.listCustomFonts) {
-      try {
-        var arr = JSON.parse(b2.listCustomFonts() || '[]');
-        if (arr.length) {
-          arr.forEach(function (fn) {
-            var name = fn.replace(/^\d+_/, '').replace(/\.(ttf|otf|woff2?)$/i, '');
-            state.custom.push({
-              id: 'own-' + fn, name: name.slice(0, 7), sub: '我导入的字体',
-              cat: 'own', fam: 'BB-User-' + Math.abs(hash(fn)), file: fn, own: true
-            });
-          });
-        }
-      } catch (e) { }
-    }
-
     $('credits').innerHTML = '内置 ' + FONTS.length + ' 种字体，均为可自由再分发的开源字库（SIL OFL 等），' +
       '各字体的版权与授权原文随 APK 一并打包，详见仓库 FONTS.md。' +
-      '「名家」标注指该字库的风格取向，不是名家真迹集字；' +
-      '如需商业字库，可点右上角「＋ 我的字体」导入你有授权的 TTF / OTF，仅在你自己手机上使用。';
+      '「名家」标注指该字库的风格取向，不是名家真迹集字。';
 
     renderCats();
     renderFonts();
     $('charCount').textContent = '0 字';
-  }
-
-  function hash(s) {
-    var h = 0;
-    for (var i = 0; i < s.length; i++) h = ((h << 5) - h + s.charCodeAt(i)) | 0;
-    return h;
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
